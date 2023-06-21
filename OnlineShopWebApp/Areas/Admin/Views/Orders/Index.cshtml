@@ -1,0 +1,48 @@
+﻿@model List<OrderViewModel>
+@{
+    ViewData["Title"] = "Панель администратора - Заказы";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2>Список заказов</h2>
+                </div>
+                <div class="mt-4">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">№</th>
+                                <th scope="col">Сумма</th>
+                                <th scope="col">Статус</th>
+                                <th scope="col">Пользователь (логин)</th>
+                                <th scope="col">Дата</th>
+                                <th scope="col">Время</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Count; i++)
+                            {
+                                <tr>
+                                    <td>@(i + 1)</td>
+                                    <td>@Model[i].Total</td>
+                                    <td>@EnumHelper.GetDisplayName(Model[i].Status)</td>
+                                    <td>@Model[i].OrderData.Email</td>
+                                    <td>@Model[i].DateTime.ToString("dd.MM.yyyy")</td>
+                                    <td>@Model[i].DateTime.ToString("HH:mm")</td>
+                                    <td><a class="text" asp-controller="Orders" asp-action="OrderDetails" asp-route-id="@Model[i].Id">Подробно</a></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,92 @@
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using OnlineShop.Db.Interfaces;
+using OnlineShop.Db.Models;
+using OnlineShopWebApp.Controllers;
+using OnlineShopWebApp.Models;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Xunit;
+
+namespace OnlineShop.Tests.Controllers
+{
+    public class FavoriteControllerTests
+    {
+        private readonly Mock<IFavoritesManager> favoritesManagerMock;
+        private readonly Mock<IProductsManager> productsManagerMock;
+        private readonly Mock<UserManager<User>> userManagerMock;
+        private readonly Mock<IMapper> mapperMock;
+        private readonly FavoriteController controller;
+
+        public FavoriteControllerTests()
+        {
+            favoritesManagerMock = new Mock<IFavoritesManager>();
+            productsManagerMock = new Mock<IProductsManager>();
+            userManagerMock = new Mock<UserManager<User>>(Mock.Of<IUserStore<User>>(), null, null, null, null, null, null, null, null);
+            mapperMock = new Mock<IMapper>();
+            controller = new FavoriteController(favoritesManagerMock.Object, productsManagerMock.Object, userManagerMock.Object, mapperMock.Object);
+
+            var user = new User { UserName = "testuser" };
+            var identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, user.UserName) });
+            var principal = new ClaimsPrincipal(identity);
+            var httpContext = new DefaultHttpContext { User = principal };
+
+            controller.ControllerContext = new ControllerContext { HttpContext = httpContext };
+
+            userManagerMock.Setup(manager => manager.GetUserAsync(principal)).ReturnsAsync(user);
+        }
+
+        [Fact]
+        public async Task Index_ReturnsViewResultWithFavoriteViewModel()
+        {
+            // Arrange            
+            var favoritesList = new Favorite();
+            var favoriteViewModel = new FavoriteViewModel();
+
+            favoritesManagerMock.Setup(manager => manager.TryGetByUserIdAsync("testuser")).ReturnsAsync(favoritesList);
+            mapperMock.Setup(mapper => mapper.Map<FavoriteViewModel>(favoritesList)).Returns(favoriteViewModel);
+
+            // Act
+            var result = await controller.Index();
+
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(favoriteViewModel, viewResult.ViewData.Model);
+        }
+
+        [Fact]
+        public async Task Add_RedirectsToIndexAction()
+        {
+            // Arrange
+            var productId = Guid.NewGuid();
+            var product = new Product();
+
+            productsManagerMock.Setup(manager => manager.TryGetByIdAsync(productId)).ReturnsAsync(product);
+
+            // Act
+            var result = await controller.Add(productId);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+        }
+
+        [Fact]
+        public async Task Remove_RedirectsToIndexAction()
+        {
+            // Arrange
+            var productId = Guid.NewGuid();
+
+            // Act
+            var result = await controller.Remove(productId);
+
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+        }
+    }
+}

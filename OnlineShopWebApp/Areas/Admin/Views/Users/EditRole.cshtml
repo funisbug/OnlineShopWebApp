@@ -1,0 +1,54 @@
+﻿@model EditRoleViewModel
+
+@{
+    ViewData["Title"] = "Изменить роль пользователя";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div>
+                    <h4>Пользователь @Model.Email</h4>
+                </div>
+                <form method="post">
+                    <div class="mt-3">
+                        <div class="card-body">
+                            <input type="hidden" asp-for="Email" value="@Model.Email">
+                            @foreach (var role in Model.AllRoles)
+                            {
+                                <div>
+                                    @if (Model.UserRoles.Select(x => x.Name).Contains(role.Name))
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="userRolesViewModel[@role.Name]" type="checkbox" value="true" checked>
+                                            <label class="form-check-label" for="flexCheckDefault">@role.Name</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="userRolesViewModel[@role.Name]" type="checkbox" value="true">
+                                            <label class="form-check-label" for="flexCheckChecked">@role.Name</label>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="row mt-4 text-center">
+                        <div class="col">
+                            <button class="btn btn-primary" asp-controller="Users" asp-action="Index">Вернуться назад</button>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary" asp-controller="Users" asp-action="EditRole">Изменить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>        
+    </div>
+</div>

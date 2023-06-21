@@ -1,0 +1,49 @@
+﻿@model UserViewModel
+
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>@Model.Email</h4>
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @if (Model.ImagePath != null)
+                        {
+                            <img class="img-thumbnail" src="@Model.ImagePath" width="150" height="150" />
+                        }                        
+                        <div class="form-group row">
+                            <label for="name" class="col-4 col-form-label">Имя</label>
+                            <div class="col-8">
+                                <p class="font-weight-normal">@Model.Name</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-4 col-form-label">Телефон</label>
+                            <div class="col-8">
+                                <p class="font-weight-normal">@Model.PhoneNumber</p>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="name" class="col-4 col-form-label">Адрес</label>
+                            <div class="col-8">
+                                <p class="font-weight-normal">@Model.Adress</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

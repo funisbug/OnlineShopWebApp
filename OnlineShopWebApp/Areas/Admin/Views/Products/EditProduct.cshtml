@@ -1,0 +1,50 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Редактировать продукт";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div class="text-center mb-4">
+                        <h2>Редактировать</h2>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">ID продукта</label>
+                        <input type="text" class="form-control" placeholder="@Model.Id" disabled>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Название</label>
+                        <input type="text" class="form-control" placeholder="@Model.Name" asp-for="Name">
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Цена</label>
+                        <input type="number" class="form-control" placeholder="@Model.Cost" asp-for="Cost">
+                        <span asp-validation-for="Cost" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Описание</label>
+                        <textarea class="form-control" rows="3" placeholder="@Model.Description" asp-for="Description"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Загрузить изображение</label>
+                        <input type="file" class="form-control-file" asp-for="UploadedFile">
+                    </div>
+                    <input type="hidden" asp-for="ImagePath" value="@Model.ImagePath">
+                    <div class="text-center mb-3">
+                        <button type="submit" class="btn btn-primary w-25" asp-controller="Products" asp-action="EditProduct" asp-route-id="@Model.Id">Изменить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

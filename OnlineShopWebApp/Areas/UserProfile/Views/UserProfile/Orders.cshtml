@@ -1,0 +1,77 @@
+﻿@model List<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Личный кабинет";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                @if (Model.Count == 0)
+                {
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>Список заказов пуст</h4>
+                    </div>
+                </div>
+                }
+                @for (int i = Model.Count - 1; i >= 0; i--)
+                {
+                    var order = Model[i];
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <div class="col">
+                                            <h5>Заказ № @(i + 1)</h5>
+                                            <h5><span class="badge badge-danger badge-pill">@EnumHelper.GetDisplayName(order.Status)</span></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-7 order-md-2">
+                                            <div class="form-group row">
+                                                <div class="col-5">Дата оформления:</div>
+                                                <div class="col-7">@order.DateTime.ToString("dd.MM.yyyy в HH:mm")</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">Адрес доставки:</div>
+                                                <div class="col-7">@order.OrderData.Address</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">Получатель:</div>
+                                                <div class="col-7">@order.OrderData.Name</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">Телефон:</div>
+                                                <div class="col-7">@order.OrderData.Phone</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">E-mail:</div>
+                                                <div class="col-7">@order.OrderData.Email</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">Комментарий:</div>
+                                                <div class="col-7">@order.OrderData.Comment</div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="col-5">Сумма заказа:</div>
+                                                <div class="col-7">@order.Total ₽</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

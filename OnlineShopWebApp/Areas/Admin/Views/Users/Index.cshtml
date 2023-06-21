@@ -1,0 +1,43 @@
+﻿@model List<UserViewModel>
+@{
+    ViewData["Title"] = "Панель администратора - Пользователи";
+}
+
+<div class="row">
+    <div class="col-md-3 my-4">
+        @await Html.PartialAsync("LeftMenu")
+    </div>
+    <div class="col-md-9 my-4">
+        <div class="card">
+            <div class="card-body">
+                <div class="text-center">
+                    <h2>Список пользователей</h2>
+                </div>
+                <div class="mt-3">
+                    <a class="text" asp-area="" asp-controller="Account" asp-action="SignUp">Добавить пользователя</a>
+                </div>
+                <div class="mt-3">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">ФИО</th>
+                                <th scope="col">Телефон</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td><a class="text" asp-controller="Users" asp-action="UserDetails" asp-route-email="@user.Email">@user.Email</a></td>
+                                    <td>@user.Name</td>
+                                    <td>@user.PhoneNumber</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>

@@ -1,0 +1,76 @@
+﻿@model ProductViewModel
+
+@{
+    ViewData["Title"] = @Model.Name;
+}
+
+<div class="album py-5">
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div class="mdb-lightbox">
+                <div class="row product-gallery mx-1">
+                    <div class="col-12 mb-0">
+                        <img class="card-img-top" src="@Model.ImagePath" alt="Изображение товара" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h5>@Model.Name</h5>
+            <p><span class="mr-1"><strong>@Model.Cost руб</strong></span></p>
+            <p class="pt-1"> @Model.Description</p>
+            <div class="table-responsive mb-2">
+            </div>
+            <a role="button" class="btn btn-outline-danger" asp-controller="Home" asp-action="Index">Продолжить покупки</a>
+            <a role="button" class="btn btn-outline-danger" asp-controller="Cart" asp-action="Add" asp-route-productId="@Model.Id">Добавить в корзину</a>
+        </div>
+    </div>
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8 col-lg-8">
+            <div class="card shadow-0 border" style="background-color: #f0f2f5;">
+                <div class="card-body p-4">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form method="post">
+                        <div class="form-outline mb-3">
+                            <textarea class="form-control" rows="3" asp-for="NewReview.Text"></textarea>
+                            <input type="hidden" asp-for="NewReview.ProductId" value="@Model.Id">                            
+                        </div>                        
+                        <div class="d-flex justify-content-between align-items-center mb-4"> 
+                            <div>
+                                Оценка:
+                                <select class="form-select" asp-for="NewReview.Grade">
+                                    <option value="5">5</option>
+                                    <option value="4">4</option>
+                                    <option value="3">3</option>
+                                    <option value="2">2</option>
+                                    <option value="1">1</option>
+                                </select>
+                            </div>
+                                                       
+                            <button type="submit" class="btn btn-danger" asp-controller="Product" asp-action="AddReview">Добавить отзыв</button>
+                        </div>                    
+                    </form>
+                    }                    
+                    @for (int i = 0; i < Model.Reviews.Count; i++)
+                    {
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <div class="d-flex flex-row align-items-center">                                        
+                                        <p class="small">@Model.Reviews[i].UserId</p>
+                                    </div>
+                                    <div class="d-flex flex-row align-items-center">
+                                        <p class="small text-muted mb-0">Оценка: @Model.Reviews[i].Grade</p>
+                                        <i class="fas fa-star text-warning me-2"></i>
+                                    </div>
+                                </div>
+                                <p class="mb-0 ms-2">@Model.Reviews[i].Text</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Главная страница";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center text-uppercase mb-3">
+                Добро пожаловать в Лавку Рубика!
+            </h2>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row justify-content-center mb-4">
+        <div class="col-5">
+            <form class="d-flex" role="search" method="post">
+                <input class="form-control mr-2" type="search" placeholder="Поиск" name="name">
+                <button type="submit" class="btn btn-outline-danger" asp-controller="Home" asp-action="Search">Поиск</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <img class="card-img-top" src="https://cccstore.ru/local/templates/cccstore/img/pages/main/warranty-goods-services.webp?fv=00008">
+        </div>
+        <div class="col-4">
+            <img class="card-img-top" src="https://cccstore.ru/local/templates/cccstore/img/pages/main/bonuses-discounts.webp?fv=00008">
+        </div>
+        <div class="col-4">
+            <img class="card-img-top" src="https://cccstore.ru/local/templates/cccstore/img/pages/main/payment-upon-receipt.webp?fv=00008">
+        </div>
+    </div>
+</div>
+
+@model List<ProductViewModel>
+@await Html.PartialAsync("Products")
+
+
+   
+    
+   

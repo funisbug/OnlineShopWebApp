@@ -1,0 +1,46 @@
+﻿@model ComparisonViewModel
+
+@if (Model == null || Model.Items.Count == 0)
+{
+    <div class="container text-center">
+        <h3>Нет добавленных товаров для сравнения</h3>
+    </div>
+    
+}
+
+else
+{
+    <table class="table">
+        <thead>
+            
+        </thead>
+        <tbody>
+            <tr>
+                <td>Название</td>
+                @foreach (var item in Model.Items)
+                {
+                    <td class="text-center">@item.Name</td>
+                }
+            </tr>
+            <tr>
+                <td>Цена</td>
+                @foreach (var item in Model.Items)
+                {
+                    <td class="text-center">@item.Cost</td>
+                }
+            </tr>
+            <tr>
+                <td></td>
+                @foreach (var item in Model.Items)
+                {
+                    <td class="text-center">
+                        <a role="button" class="btn btn-outline-danger w-50" asp-controller="Comparison" asp-action="Remove" asp-route-productId="@item.Id">Удалить</a>
+                    </td>
+                }
+            </tr>
+        </tbody>
+        <tfoot>
+
+        </tfoot>
+    </table>
+}
